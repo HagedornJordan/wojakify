@@ -1,3 +1,5 @@
+> The entirety of this application was developed with Codex using GPT 5.5
+
 # wojakify
 
 Super simple dummy web tool for putting a Wojak overlay on a user-selected image and downloading the result.
