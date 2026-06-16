@@ -1,4 +1,4 @@
-# wojackify
+# wojakify
 
 Super simple dummy web tool for putting a Wojak overlay on a user-selected image and downloading the result.
 
@@ -23,7 +23,7 @@ It uses:
 - inline JavaScript
 - browser Canvas API
 
-The original overlay asset is `wojack.jpg`, but `index.html` currently embeds a pre-keyed transparent PNG version as a base64 `data:image/png` URL so the app can remain one-file and avoid local `file://` image/canvas security issues.
+The original overlay asset is `wojak.jpg`, but `index.html` currently embeds a pre-keyed transparent PNG version as a base64 `data:image/png` URL so the app can remain one-file and avoid local `file://` image/canvas security issues.
 
 ## Current State
 
@@ -75,7 +75,7 @@ If Chrome tools are available, visually verify:
 ## Useful Files
 
 - `index.html` - full app
-- `wojack.jpg` - original green-screen Wojak source asset
+- `wojak.jpg` - original green-screen Wojak source asset
 
 ## Current End State
 

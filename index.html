@@ -3,43 +3,112 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>wojackify</title>
+  <title>wojakify</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      margin: 24px;
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f4f4;
       color: #111;
     }
 
     main {
-      max-width: 760px;
-      margin: 0 auto;
+      min-height: 100vh;
+      padding: 16px;
     }
 
     h1 {
-      margin: 0 0 16px;
-      font-size: 32px;
+      margin: 0 0 12px;
+      font-size: 28px;
       font-weight: 700;
     }
 
-    .controls {
+    .workspace {
       display: grid;
-      gap: 12px;
-      margin-bottom: 16px;
+      grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .controls {
+      position: sticky;
+      top: 16px;
+      display: grid;
+      gap: 14px;
       padding: 16px;
       border: 1px solid #bbb;
       background: #fff;
+      min-width: 0;
     }
 
     label {
       display: grid;
-      gap: 4px;
+      gap: 6px;
       font-weight: 700;
     }
 
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    output {
+      min-width: 3ch;
+      color: #555;
+      font-weight: 400;
+      text-align: right;
+    }
+
+    .file-picker {
+      cursor: pointer;
+    }
+
+    .file-control {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .file-button {
+      padding: 6px 9px;
+      border: 1px solid #aaa;
+      background: #eee;
+      color: #111;
+      font-weight: 400;
+    }
+
+    .file-name {
+      overflow: hidden;
+      color: #111;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
     input[type="range"] {
-      width: 100%;
+      display: block;
+      width: calc(100% - 16px);
+      max-width: 100%;
+      min-height: 28px;
+      margin: 0 8px;
     }
 
     button,
@@ -48,7 +117,7 @@
     }
 
     button {
-      width: fit-content;
+      width: 100%;
       padding: 8px 12px;
       border: 1px solid #111;
       background: #fff;
@@ -75,45 +144,121 @@
       color: #555;
       font-size: 14px;
     }
+
+    @media (max-width: 720px) {
+      main {
+        padding: 10px;
+        padding-bottom: 228px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .workspace {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 10px;
+      }
+
+      .controls {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        top: auto;
+        z-index: 2;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px 12px;
+        padding: 10px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        overflow: hidden;
+      }
+
+      .controls label:first-child,
+      .controls button,
+      .controls .note {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        gap: 4px;
+        font-size: 13px;
+      }
+
+      .control-row {
+        display: grid;
+        gap: 2px;
+      }
+
+      output {
+        min-width: 0;
+        text-align: left;
+      }
+
+      .note {
+        margin: 0;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>wojackify</h1>
+    <h1>wojakify</h1>
 
-    <div class="controls">
-      <label>
-        image
-        <input id="upload" type="file" accept="image/*">
-      </label>
+    <div class="workspace">
+      <div class="controls">
+        <label class="file-picker">
+          <span>image</span>
+          <span class="file-control">
+            <span class="file-button">choose</span>
+            <span class="file-name" id="fileName">no image selected</span>
+          </span>
+          <input class="visually-hidden" id="upload" type="file" accept="image/*">
+        </label>
 
-      <label>
-        wojack size
-        <input id="size" type="range" min="10" max="100" value="45">
-      </label>
+        <label>
+          <span class="control-row">
+            <span>size</span>
+            <output id="sizeValue">45%</output>
+          </span>
+          <input id="size" type="range" min="10" max="100" value="45">
+        </label>
 
-      <label>
-        x position
-        <input id="x" type="range" min="0" max="100" value="50">
-      </label>
+        <label>
+          <span class="control-row">
+            <span>x</span>
+            <output id="xValue">50%</output>
+          </span>
+          <input id="x" type="range" min="0" max="100" value="50">
+        </label>
 
-      <label>
-        y position
-        <input id="y" type="range" min="0" max="100" value="50">
-      </label>
+        <label>
+          <span class="control-row">
+            <span>y</span>
+            <output id="yValue">50%</output>
+          </span>
+          <input id="y" type="range" min="0" max="100" value="50">
+        </label>
 
-      <button id="download" disabled>download</button>
-      <p class="note" id="status">Pick an image, move the wojack around, then download the result.</p>
+        <button id="download" disabled>download</button>
+        <p class="note" id="status">Pick an image, move the wojak around, then download the result.</p>
+      </div>
+
+      <canvas id="canvas" width="900" height="600"></canvas>
     </div>
-
-    <canvas id="canvas" width="900" height="600"></canvas>
   </main>
 
   <script>
     const upload = document.getElementById("upload");
+    const fileName = document.getElementById("fileName");
     const size = document.getElementById("size");
     const x = document.getElementById("x");
     const y = document.getElementById("y");
+    const sizeValue = document.getElementById("sizeValue");
+    const xValue = document.getElementById("xValue");
+    const yValue = document.getElementById("yValue");
     const download = document.getElementById("download");
     const status = document.getElementById("status");
     const canvas = document.getElementById("canvas");
@@ -124,7 +269,14 @@
 
     let userImage = null;
 
+    function updateValues() {
+      sizeValue.textContent = `${size.value}%`;
+      xValue.textContent = `${x.value}%`;
+      yValue.textContent = `${y.value}%`;
+    }
+
     function draw() {
+      updateValues();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (!userImage) {
@@ -159,6 +311,7 @@
       const image = new Image();
       image.onload = () => {
         userImage = image;
+        fileName.textContent = file.name;
         download.disabled = false;
         draw();
         URL.revokeObjectURL(image.src);
@@ -172,7 +325,7 @@
 
     download.addEventListener("click", () => {
       const link = document.createElement("a");
-      link.download = "wojackified.png";
+      link.download = "wojakified.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
     });
